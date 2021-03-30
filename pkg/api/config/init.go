@@ -17,8 +17,10 @@ func InitAPI() *fiber.App {
 
 // Set API routes
 func setRoutes(app *fiber.App) {
-	api := app.Group("/v1")
-	api.Get("/coordinates", endpoints.GetPoints)
-	api.Post("/updateCoordinate", endpoints.UpdatePoint)
-	api.Post("/inside", endpoints.CheckDeviceInsidePoint)
+	api := app.Group("/api")
+	v1 := api.Group("/v1")
+	v1.Get("/coordinates", endpoints.GetPoints)
+	v1.Post("/updateCoordinate", endpoints.UpdatePoint)
+	v1.Post("/inside", endpoints.CheckDeviceInsidePoint)
+	v1.Get("/health", endpoints.Health)
 }
