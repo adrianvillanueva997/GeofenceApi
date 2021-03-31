@@ -1,7 +1,7 @@
-package endpoints
+package v1
 
 import (
-	"github.com/adrianvillanueva997/GeofenceApi/pkg/models"
+	"github.com/adrianvillanueva997/GeofenceApi/pkg/api/models"
 	"github.com/gofiber/fiber/v2"
 )
 

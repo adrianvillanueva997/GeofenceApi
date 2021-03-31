@@ -8,11 +8,12 @@ import (
 )
 
 var limiterConfig = limiter.Config{
-	Max:        5, // Max number of connections
-	Expiration: 1 * time.Minute,
+	Next: nil,
+	Max:  5, // Max number of connections
 	KeyGenerator: func(c *fiber.Ctx) string {
 		return c.IP()
 	},
+	Expiration: 1 * time.Minute,
 	LimitReached: func(c *fiber.Ctx) error {
 		return c.SendStatus(fiber.StatusTooManyRequests)
 	},

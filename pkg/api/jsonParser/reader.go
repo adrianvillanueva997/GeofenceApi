@@ -1,4 +1,4 @@
-package jsonParser
+package jsonparser
 
 import (
 	"encoding/json"
@@ -9,7 +9,7 @@ import (
 	"github.com/adrianvillanueva997/GeofenceApi/pkg/api/models"
 )
 
-func ReadJSON() models.Coordinate {
+func ReadJSON() models.JSONCoordinate {
 	jsonFile, err := os.Open("data/geofence.json")
 	if err != nil {
 		log.Panicf(err.Error())
@@ -19,10 +19,11 @@ func ReadJSON() models.Coordinate {
 	if err != nil {
 		log.Panicf(err.Error())
 	}
-	var coordindates models.Coordinate
+	var coordindates models.JSONCoordinate
 	err = json.Unmarshal(byteData, &coordindates)
 	if err != nil {
 		log.Panicf(err.Error())
 	}
+
 	return coordindates
 }

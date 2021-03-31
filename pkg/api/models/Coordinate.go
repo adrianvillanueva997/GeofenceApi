@@ -1,6 +1,6 @@
 package models
 
-type Coordinate struct {
+type JSONCoordinate struct {
 	Description string `json:"description"`
 	Geometry    struct {
 		Type        string `json:"type"`
