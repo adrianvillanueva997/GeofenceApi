@@ -9,7 +9,19 @@ import (
 	"github.com/adrianvillanueva997/GeofenceApi/pkg/api/models"
 )
 
-func ReadJSON() []models.Coordinate {
+func jsonToGeoJSON(jsonModel models.JSONCoordinate) models.GeoJSON {
+	geometry := models.Geometry{
+		Type:        jsonModel.Geometry.Type,
+		Coordinates: jsonModel.Geometry.Coordinates,
+	}
+	geoJSON := models.GeoJSON{
+		Type:     "Feature",
+		Geometry: geometry,
+	}
+	return geoJSON
+}
+
+func ReadJSON() models.GeoJSON {
 	jsonFile, err := os.Open("data/geofence.json")
 	if err != nil {
 		log.Panicf(err.Error())
@@ -19,23 +31,11 @@ func ReadJSON() []models.Coordinate {
 	if err != nil {
 		log.Panicf(err.Error())
 	}
-	var JSONcoordinates models.JSONCoordinate
-	err = json.Unmarshal(byteData, &JSONcoordinates)
+	var JSONCoordinates models.JSONCoordinate
+	err = json.Unmarshal(byteData, &JSONCoordinates)
 	if err != nil {
 		log.Panicf(err.Error())
 	}
-	coordinates := jsonToCoordinates(JSONcoordinates)
-	return coordinates
-}
-
-func jsonToCoordinates(jSONCoordinates models.JSONCoordinate) []models.Coordinate {
-	var coordinates []models.Coordinate
-	for i := 0; i < len(jSONCoordinates.Geometry.Coordinates[0]); i++ {
-		var coordinate models.Coordinate
-		coordinate.ID = i
-		coordinate.Latitude = jSONCoordinates.Geometry.Coordinates[0][i][0]
-		coordinate.Longitude = jSONCoordinates.Geometry.Coordinates[0][i][1]
-		coordinates = append(coordinates, coordinate)
-	}
-	return coordinates
+	geoJSON := jsonToGeoJSON(JSONCoordinates)
+	return geoJSON
 }

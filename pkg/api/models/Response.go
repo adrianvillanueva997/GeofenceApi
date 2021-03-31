@@ -9,3 +9,18 @@ type GetCoordinates struct {
 	NumberOfCoordinates int          `json:"number_of_coordinates"`
 	Coordinates         []Coordinate `json:"coordinates"`
 }
+type DeviceStatusResponse struct {
+	Status  int  `json:"status"`
+	Message bool `json:"message"`
+}
+
+type FieldErrorResponse struct {
+	FailedField string
+	Tag         string
+	Value       string
+}
+
+type ErrorResponse struct {
+	Status       int    `json:"status"`
+	ErrorMessage string `json:"error_message"`
+}
