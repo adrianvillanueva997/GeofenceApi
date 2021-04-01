@@ -1,7 +1,7 @@
 package config
 
 import (
-	v12 "github.com/adrianvillanueva997/GeofenceApi/pkg/api/endpoints/v1"
+	endpointsV1 "github.com/adrianvillanueva997/GeofenceApi/pkg/api/endpoints/v1"
 	"github.com/adrianvillanueva997/GeofenceApi/pkg/api/middleware"
 	"github.com/gofiber/fiber/v2"
 )
@@ -19,8 +19,8 @@ func InitAPI() *fiber.App {
 // Set API routes
 func setV1APIRoutes(api fiber.Router) {
 	v1 := api.Group("/v1")
-	v1.Get("/coordinates", v12.GetPoints)
-	v1.Post("/updateCoordinate", v12.UpdatePoint)
-	v1.Post("/inside", v12.CheckDeviceInsidePoint)
-	v1.Get("/health", v12.Health)
+	v1.Get("/coordinates", endpointsV1.GetPoints)
+	v1.Post("/update", endpointsV1.UpdatePoint)
+	v1.Post("/inside", endpointsV1.CheckDeviceInsidePoint)
+	v1.Get("/health", endpointsV1.Health)
 }
