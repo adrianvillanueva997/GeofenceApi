@@ -15,9 +15,7 @@ import (
 func isInside(features *geojson.Feature, point orb.Point) bool {
 	polygon, isPolygon := features.Geometry.(orb.Polygon)
 	if isPolygon {
-		if planar.PolygonContains(polygon, point) {
-			return true
-		}
+		return planar.PolygonContains(polygon, point)
 	}
 	return false
 }
