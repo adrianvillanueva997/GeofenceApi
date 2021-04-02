@@ -9,6 +9,8 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/logger"
 )
 
+const ReFile = "logs/requests.log"
+
 var loggerConfig = logger.Config{
 	Next:         nil, // Function to skip middleware when return True
 	Format:       "[${time}] ${ip} - ${status} - ${latency} - ${method} - ${path}\n",

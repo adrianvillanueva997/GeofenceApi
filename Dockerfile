@@ -13,6 +13,6 @@ FROM alpine:3.13.4
 WORKDIR /app
 EXPOSE 3000
 COPY --from=build-env /build/app .
-RUN adduser -D appuser
+RUN adduser -D appuser && mkdir logs && chown -R appuser:appuser /app && chmod 755 /app
 USER appuser
 ENTRYPOINT ./app
