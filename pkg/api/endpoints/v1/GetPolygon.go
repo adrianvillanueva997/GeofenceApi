@@ -8,7 +8,7 @@ import (
 func GetPolygon(ctx *fiber.Ctx) error {
 	response := models.PolygonResponse{
 		Status:  fiber.StatusOK,
-		Polygon: polygon.Geometry,
+		Polygon: polygon,
 		Message: "OK",
 	}
 	if polygon.Geometry.Coordinates == nil {

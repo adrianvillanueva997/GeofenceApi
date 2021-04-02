@@ -7,7 +7,7 @@ type HealthCheck struct {
 type PolygonResponse struct {
 	Status  int      `json:"status"`
 	Message string   `json:"message"`
-	Polygon Geometry `json:"geometry"`
+	Polygon GeoJSON `json:"geometry"`
 }
 type DeviceStatusResponse struct {
 	Status  int  `json:"status"`
