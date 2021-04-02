@@ -1,6 +1,6 @@
 # Multistage docker image building
 # Build stage
-FROM golang:1.16.2-alpine as build-env
+FROM golang:1.16.3-alpine as build-env
 WORKDIR /build
 COPY go.mod .
 COPY go.sum .
