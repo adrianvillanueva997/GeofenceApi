@@ -1,0 +1,12 @@
+version: '3'
+services:
+  api:
+    container_name: GeofenceAPI
+    restart: unless-stopped
+    image: adrianvillanueva997/geofenceapi
+    ports:
+      - 3000:3000
+    volumes:
+      - ./logs:/logs
+
+
