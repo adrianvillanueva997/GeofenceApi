@@ -4,10 +4,10 @@ type HealthCheck struct {
 	Status  int    `json:"status"`
 	Message string `json:"message"`
 }
-type GetCoordinates struct {
-	Status              int          `json:"status"`
-	NumberOfCoordinates int          `json:"number_of_coordinates"`
-	Coordinates         []Coordinate `json:"coordinates"`
+type PolygonResponse struct {
+	Status  int      `json:"status"`
+	Message string   `json:"message"`
+	Polygon Geometry `json:"geometry"`
 }
 type DeviceStatusResponse struct {
 	Status  int  `json:"status"`

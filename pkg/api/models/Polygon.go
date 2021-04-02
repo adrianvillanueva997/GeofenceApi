@@ -1,9 +1,5 @@
 package models
 
-type JSONCoordinate struct {
-	Description string   `json:"description"`
-	Geometry    Geometry `json:"geometry"`
-}
 
 type GeoJSON struct {
 	Description string   `json:"description"`

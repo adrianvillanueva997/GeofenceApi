@@ -1,26 +1,22 @@
 package v1
 
 import (
-	"fmt"
+	"bytes"
+	"encoding/json"
+	"log"
 
 	"github.com/adrianvillanueva997/GeofenceApi/pkg/api/models"
 	validationv1 "github.com/adrianvillanueva997/GeofenceApi/pkg/api/validation/v1"
 	"github.com/gofiber/fiber/v2"
+	"github.com/paulmach/orb"
+	"github.com/paulmach/orb/geojson"
 )
 
-// Checks if the ID provided is less than the total amount of ids in the coordinates array
-func checkPoints(id int) bool {
-	if len(coordinates.Geometry.Coordinates[0]) >= id {
-		return true
-	}
-	return false
-}
 func checkLongitude(longitude float64) bool {
 	if longitude >= -180 && longitude <= 180 {
 		return true
 	}
 	return false
-
 }
 
 func checkLatitude(latitude float64) bool {
@@ -30,7 +26,37 @@ func checkLatitude(latitude float64) bool {
 	return false
 }
 
-func UpdatePoint(ctx *fiber.Ctx) error {
+func checkCoordinates(coordinates models.Update) bool {
+	isCoordinate := true
+	for i := 0; i < len(coordinates.Polygon.Coordinates[0]) && isCoordinate; i++ {
+		if !checkLatitude(coordinates.Polygon.Coordinates[0][i][1]) || !checkLongitude(coordinates.Polygon.Coordinates[0][i][0]) {
+			isCoordinate = false
+		}
+	}
+	return isCoordinate
+}
+
+func isPolygon(features *geojson.Feature) bool {
+	_, isPolygon := features.Geometry.(orb.Polygon)
+	return isPolygon
+}
+func encodeGeoJSON(newPolygon models.GeoJSON) (*geojson.Feature, error) {
+	buffer := new(bytes.Buffer)
+	err := json.NewEncoder(buffer).Encode(newPolygon)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+	features, err := geojson.UnmarshalFeature(buffer.Bytes())
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+	encodedPolygon = features
+	return features, err
+}
+
+func UpdatePolygon(ctx *fiber.Ctx) error {
 	var body models.Update
 	err := ctx.BodyParser(&body)
 	if err != nil {
@@ -40,31 +66,41 @@ func UpdatePoint(ctx *fiber.Ctx) error {
 		}
 		return ctx.Status(errMessage.Status).JSON(errMessage)
 	}
-	fmt.Println(body)
 	errors := validationv1.ValidateUpdateRequest(body)
 	if errors != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(errors)
 	}
-	if checkLatitude(body.Latitude) == false {
-		errMessage := models.ErrorResponse{Status: fiber.StatusBadRequest, ErrorMessage: "Bad Latitude"}
-		return ctx.Status(errMessage.Status).JSON(errMessage)
+	errors = validationv1.ValidateGeometryStruct(body.Polygon)
+	if errors != nil {
+		return ctx.Status(fiber.StatusBadRequest).JSON(errors)
 	}
-	if checkLongitude(body.Longitude) == false {
-		errMessage := models.ErrorResponse{Status: fiber.StatusBadRequest, ErrorMessage: "Bad Longitude"}
-		return ctx.Status(errMessage.Status).JSON(errMessage)
-	}
-	if checkPoints(body.ID) {
-		coordinates.Geometry.Coordinates[0][body.ID][1] = body.Longitude
-		coordinates.Geometry.Coordinates[0][body.ID][0] = body.Latitude
-		response := models.UpdateCoordinateResponse{
-			Status:  fiber.StatusOK,
-			Message: "Coordinates updated succesfully",
+	if checkCoordinates(body) {
+		geojsonData := models.GeoJSON{
+			Description: body.Description,
+			Type:        "Feature",
+			Geometry:    body.Polygon,
 		}
-		return ctx.Status(response.Status).JSON(response)
+		features, err := encodeGeoJSON(geojsonData)
+		if err != nil {
+			log.Println(err)
+			return ctx.Status(fiber.StatusBadRequest).JSON(err.Error())
+		}
+		if isPolygon(features) {
+			polygon.Type = "Feature"
+			polygon.Geometry.Type = body.Polygon.Type
+			polygon.Description = body.Description
+			polygon.Geometry.Coordinates = body.Polygon.Coordinates
+			response := models.UpdateCoordinateResponse{
+				Status:  fiber.StatusOK,
+				Message: "Polygon updated successfully",
+			}
+			return ctx.Status(response.Status).JSON(response)
+		}
+		errMessage := models.ErrorResponse{
+			Status:       fiber.StatusBadRequest,
+			ErrorMessage: "Bad polygon",
+		}
+		return ctx.Status(errMessage.Status).JSON(errMessage)
 	}
-	errMessage := models.ErrorResponse{
-		Status:       fiber.StatusBadRequest,
-		ErrorMessage: "Bad Coordinates ID",
-	}
-	return ctx.Status(errMessage.Status).JSON(errMessage)
+	return ctx.Status(fiber.StatusOK).JSON("fail")
 }

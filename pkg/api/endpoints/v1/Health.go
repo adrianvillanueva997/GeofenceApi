@@ -10,5 +10,5 @@ func Health(ctx *fiber.Ctx) error {
 		Status:  fiber.StatusOK,
 		Message: "OK",
 	}
-	return ctx.Status(fiber.StatusOK).JSON(response)
+	return ctx.Status(response.Status).JSON(response)
 }
