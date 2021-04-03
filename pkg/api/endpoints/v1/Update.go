@@ -44,12 +44,20 @@ func encodeGeoJSON(newPolygon models.GeoJSON) (*geojson.Feature, error) {
 	buffer := new(bytes.Buffer)
 	err := json.NewEncoder(buffer).Encode(newPolygon)
 	if err != nil {
+		errorMonitorArray = append(errorMonitorArray, models.ErrorMonitor{
+			Date:  now(),
+			Error: err,
+		})
 		log.Println(err)
 		return nil, err
 	}
 	features, err := geojson.UnmarshalFeature(buffer.Bytes())
 	if err != nil {
 		log.Println(err)
+		errorMonitorArray = append(errorMonitorArray, models.ErrorMonitor{
+			Date:  now(),
+			Error: err,
+		})
 		return nil, err
 	}
 	encodedPolygon = features

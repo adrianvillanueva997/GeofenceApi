@@ -13,6 +13,7 @@ func InitAPI() *fiber.App {
 	setV1APIRoutes(api)
 	middleware.InitAPILogging(app)
 	middleware.InitAPILimiter(app)
+	middleware.InitMetrics(app)
 	return app
 }
 
@@ -23,4 +24,5 @@ func setV1APIRoutes(api fiber.Router) {
 	v1.Put("/update", endpointsV1.UpdatePolygon)
 	v1.Get("/devicestatus", endpointsV1.DeviceStatus)
 	v1.Get("/health", endpointsV1.Health)
+	v1.Get("/monitor", endpointsV1.Monitoring)
 }

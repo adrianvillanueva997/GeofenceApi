@@ -5,8 +5,8 @@ type HealthCheck struct {
 	Message string `json:"message"`
 }
 type PolygonResponse struct {
-	Status  int      `json:"status"`
-	Message string   `json:"message"`
+	Status  int     `json:"status"`
+	Message string  `json:"message"`
 	Polygon GeoJSON `json:"geometry"`
 }
 type DeviceStatusResponse struct {
@@ -28,4 +28,9 @@ type FieldErrorResponse struct {
 type ErrorResponse struct {
 	Status       int    `json:"status"`
 	ErrorMessage string `json:"error_message"`
+}
+
+type ErrorMonitorResponse struct {
+	Status        int            `json:"status"`
+	ErrorMessages []ErrorMonitor `json:"errors"`
 }
