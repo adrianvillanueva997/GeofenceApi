@@ -110,5 +110,9 @@ func UpdatePolygon(ctx *fiber.Ctx) error {
 		}
 		return ctx.Status(errMessage.Status).JSON(errMessage)
 	}
-	return ctx.Status(fiber.StatusOK).JSON("fail")
+	errMessage := models.ErrorResponse{
+			Status:       fiber.StatusBadRequest,
+			ErrorMessage: "Bad Coordinates",
+	}
+	return ctx.Status(errMessage.Status).JSON(errMessage)
 }
