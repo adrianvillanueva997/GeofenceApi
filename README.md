@@ -92,7 +92,7 @@ Returns status 200 and an array of errors registered while the API is running.
 
 ### Monitor
 
-Get /metrics
+GET /metrics
 
 Returns a dataset of metrics collected by prometheus, some of the metrics collected are: 
 - Number of goroutines that currently exist
@@ -103,3 +103,11 @@ Returns a dataset of metrics collected by prometheus, some of the metrics collec
 - Maximum amount of virtual memory available in bytes
 
 To see the whole set of collected metrics check /metrics/example.txt
+
+## Logging 
+
+By default the API will create logs files under the /logs folder, it will create 2 files where it will write bad requests and errors.
+
+## Rate limit
+
+Currently there is a request limit, when an user performs at least 5 404 requests, the API will ban the user for 1 minute.
