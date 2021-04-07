@@ -1,12 +1,13 @@
 # Multistage docker image building
 # Build stage
 FROM golang:1.16.3-alpine as build-env
+RUN apk add --no-cache make
 WORKDIR /build
 COPY go.mod .
 COPY go.sum .
 RUN go mod download
 COPY . .
-RUN go build -o app .
+RUN make build
 
 # Production stage
 FROM alpine:3.13.4
