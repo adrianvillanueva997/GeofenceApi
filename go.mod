@@ -6,11 +6,9 @@ require (
 	github.com/ansrivas/fiberprometheus/v2 v2.1.2
 	github.com/go-playground/validator/v10 v10.6.1
 	github.com/gofiber/adaptor/v2 v2.1.2 // indirect
-	github.com/gofiber/fiber/v2 v2.10.0
+	github.com/gofiber/fiber/v2 v2.11.0
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/paulmach/orb v0.2.1
 	github.com/prometheus/client_golang v1.10.0 // indirect
 	github.com/prometheus/common v0.20.0 // indirect
-	github.com/valyala/tcplisten v1.0.0 // indirect
-	golang.org/x/sys v0.0.0-20210402192133-700132347e07 // indirect
 )
