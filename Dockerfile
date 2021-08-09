@@ -10,7 +10,7 @@ COPY . .
 RUN make build
 
 # Production stage
-FROM alpine:3.14.0
+FROM alpine:3.14.1
 WORKDIR /app
 EXPOSE 3000
 COPY --from=build-env /build/app .
