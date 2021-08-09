@@ -4,7 +4,7 @@ go 1.16
 
 require (
 	github.com/ansrivas/fiberprometheus/v2 v2.1.2
-	github.com/go-playground/validator/v10 v10.8.0
+	github.com/go-playground/validator/v10 v10.9.0
 	github.com/gofiber/adaptor/v2 v2.1.2 // indirect
 	github.com/gofiber/fiber/v2 v2.16.0
 	github.com/golang/protobuf v1.5.2 // indirect
